@@ -20,7 +20,10 @@ if [[ -n "$CKAN_INIT"  && "$CKAN_INIT" == "true" ]]; then
     fi
 
 
-    "$CKAN_HOME"/bin/paster --plugin=ckan user -c "$CKAN_CONFIG/ckan.ini" add $CKAN_ADMIN "password=$CKAN_ADMIN_PASSWORD" "email=$CKAN_ADMIN_EMAIL"
-    "$CKAN_HOME"/bin/paster --plugin=ckan sysadmin -c "$CKAN_CONFIG/ckan.ini" add $CKAN_ADMIN
+    # add an admin user if only the default and/or harvest user exists
+    if [ $("$CKAN_HOME"/bin/paster --plugin=ckan user list -c "$CKAN_CONFIG/ckan.ini" | grep -Ev '^name=(harvest|default)$' | grep '^name=' | wc -l) -eq '0' ]; then
+        "$CKAN_HOME"/bin/paster --plugin=ckan user -c "$CKAN_CONFIG/ckan.ini" add $CKAN_ADMIN "password=$CKAN_ADMIN_PASSWORD" "email=$CKAN_ADMIN_EMAIL"
+        "$CKAN_HOME"/bin/paster --plugin=ckan sysadmin -c "$CKAN_CONFIG/ckan.ini" add $CKAN_ADMIN
+    fi
 
 fi
