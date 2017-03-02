@@ -1,6 +1,7 @@
 FROM ioos/catalog-docker-base
 
 COPY ./contrib/my_init.d /etc/my_init.d
+COPY ./contrib/scripts /scripts
 
 RUN echo "Listen 8080" > /etc/apache2/ports.conf
 
