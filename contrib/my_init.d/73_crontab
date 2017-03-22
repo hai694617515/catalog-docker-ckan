@@ -9,3 +9,6 @@ echo "30 19 * * 0 root psql -h postgis -U ckanadmin ckan < /scripts/cleanup_old_
 echo "40 19 * * 0 root psql -h postgis -U ckanadmin ckan < /scripts/cleanup_old_package_revisions.sql 2>&1 | /usr/bin/logger -t cleanup_old_package_revisions" >> /etc/crontab
 echo "50 19 * * 0 root psql -h postgis -U ckanadmin ckan < /scripts/cleanup_old_resources.sql 2>&1 | /usr/bin/logger -t cleanup_old_resources" >> /etc/crontab
 echo "0 20 * * 0 root psql -h postgis -U ckanadmin ckan < /scripts/cleanup_old_tags.sql 2>&1 | /usr/bin/logger -t cleanup_old_tags" >> /etc/crontab
+
+echo "25 0 * * * root psql -h postgis -U ckanadmin ckan < /scripts/cleanup_duplicates.sql 2>&1 | /usr/bin/logger -t cleanup_duplicates" >> /etc/crontab
+echo "30 0 * * * root /usr/lib/ckan/default/bin/paster --plugin=ckan search-index rebuild -r -c /etc/ckan/default/ckan.ini 2>&1 | /usr/bin/logger -t search-index" >> /etc/crontab
